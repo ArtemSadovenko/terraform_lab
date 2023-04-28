@@ -11,7 +11,7 @@ module "courses_table" {
 }
 
 module "lambda_api" {
-  source = "../modules/lambda-api"
+  source = "../modules/lambda"
 
   function_name = module.naming.id
   handler       = "index.handler"
