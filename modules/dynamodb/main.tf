@@ -9,3 +9,9 @@ resource "aws_dynamodb_table" "table" {
     type = "S"
   }
 }
+
+module "labels" {
+  source      = "cloudposse/label/null"
+
+  context = var.context
+}
