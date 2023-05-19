@@ -8,20 +8,16 @@ resource "aws_iam_role_policy_attachment" "iam_role_lambda_basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_lambda_function" "serverless-api" {
-  filename      = var.lambda_zip
-  function_name = var.function_name
-  role          = aws_iam_role.lambda_role.arn
-  handler       = var.handler
-  runtime       = "nodejs16.x"
-
-  environment {
-    variables = var.env_var
-  }
+resource "aws_iam_role_policy_attachment" "crud-policy-attachment" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.dynamodb_crud_policy.arn
 }
 
-module "labels" {
-  source      = "cloudposse/label/null"
+resource "aws_iam_policy" "dynamodb_crud_policy" {
+  name        = "${var.function_name}-DynamoDBCrudPolicy"
+  path        = "/"
+  description = "DynamoDBCrudPolicy"
 
-  context = var.context
+  policy = var.policy_file
+
 }
